@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:particles_fly/particles_fly.dart';
 
 void main() {
   setUrlStrategy(PathUrlStrategy());
@@ -14,70 +15,105 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: AppTheme.defaultTheme(context),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  final FocusNode _focusNode = FocusNode();
+  final String _keyPressed = '';
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
+      backgroundColor: Colors.black,
+      extendBody: true,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        centerTitle: false,
+        backgroundColor: Colors.transparent,
+        title: const Text(
+          'Flutter Base',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 2,
+          ),
+        ),
       ),
-      body: const Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Text("フォントを変更しました！"),
+      body: SingleChildScrollView(
+        child: ParticlesFly(
+          height: MediaQuery.of(context).size.height * 5.0,
+          width: MediaQuery.of(context).size.width,
+          particleColor: Colors.orange,
+          lineColor: Colors.orange,
+          enableHover: true,
+          connectDots: true,
+          numberOfParticles: 300,
+        ),
       ),
     );
   }
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.requestFocus();
+  }
 }
+
+// class MyHomePage extends StatefulWidget {
+//   const MyHomePage({super.key});
+
+//   @override
+//   _MyHomePageState createState() => _MyHomePageState();
+// }
+
+// class _MyHomePageState extends State<MyHomePage> {
+//   final FocusNode _focusNode = FocusNode();
+//   String _keyPressed = '';
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Flutter Web Keyboard Listener'),
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: <Widget>[
+//             Text('Pressed key: $_keyPressed'),
+//             const SizedBox(height: 20),
+//             RawKeyboardListener(
+//               focusNode: _focusNode,
+//               onKey: (RawKeyEvent event) {
+//                 if (event is RawKeyDownEvent) {
+//                   setState(() {
+//                     _keyPressed = event.logicalKey.keyLabel;
+//                   });
+//                 }
+//               },
+//               child: const TextField(
+//                 decoration: InputDecoration(labelText: 'Focus and type here'),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class AppTheme {
   static ThemeData defaultTheme(BuildContext context) {
